@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --background-gradient: linear-gradient(135deg, #1a1b26 0%, #232339 100%);
+}
+
+body {
+  @apply bg-[#13141f] text-gray-100 font-sans;
+  background-image: var(--background-gradient);
+  min-height: 100vh;
+}
+
+.card {
+  @apply bg-[#1a1b26] rounded-xl border border-[#2a2b36];
+  backdrop-filter: blur(10px);
+}
+
+.glass-card {
+  @apply bg-[#1a1b26]/80 backdrop-blur-lg border border-[#2a2b36];
+}
+
+.text-gradient {
+  @apply text-blue-400;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-success {
+  @apply text-emerald-400;
+  background: linear-gradient(135deg, #00ff87 0%, #60efff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-warning {
+  @apply text-amber-400;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[#1a1b26];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#2a2b36] rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-[#3a3b46];
+}

@@ -1,11 +1,28 @@
 import axios from 'axios';
-import { Token } from '../types';
+import { Token, TimeFrame } from '../types';
 
-const TOKEN_MAP = {
-  ETH: { topicId: 1, chain: "ethereum-11155111" },
-  BTC: { topicId: 2, chain: "bitcoin-testnet" },
-  SOL: { topicId: 3, chain: "solana-devnet" },
-  APT: { topicId: 4, chain: "aptos-testnet" }
+const API_KEY = 'UP-040bfd4341124fcd962bebba';
+const BASE_URL = 'https://api.allora.network/v2/allora/consumer/price/ethereum-11155111';
+
+export const TOKENS = {
+  ETH: {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    color: '#627EEA',
+    timeframes: ['5m', '8h'] as TimeFrame[]
+  },
+  BTC: {
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    color: '#F7931A',
+    timeframes: ['5m', '8h'] as TimeFrame[]
+  },
+  SOL: {
+    symbol: 'SOL',
+    name: 'Solana',
+    color: '#00FFA3',
+    timeframes: ['5m', '8h'] as TimeFrame[]
+  }
 };
 
 interface AlloraResponse {
@@ -13,111 +30,77 @@ interface AlloraResponse {
   confidence: number;
   timestamp: string;
   token: Token;
+  timeframe: TimeFrame;
 }
 
-// Simulate realistic market data
-function generateFallbackData(token: Token): AlloraResponse {
+function generateFallbackData(token: Token, timeframe: TimeFrame): AlloraResponse {
   const now = new Date();
   
-  // Base prices for different tokens
   const basePrices: Record<Token, number> = {
     ETH: 2500,
     BTC: 45000,
-    SOL: 100,
-    APT: 15
+    SOL: 100
   };
   
   const basePrice = basePrices[token];
-  const volatility = 0.05; // 5% volatility
-  
-  // Generate a price movement using random walk
+  const volatility = 0.05;
   const priceChange = basePrice * volatility * (Math.random() - 0.5);
   const simulatedPrice = basePrice + priceChange;
-  
-  // Generate confidence based on volatility
-  const confidence = 0.5 + Math.random() * 0.4; // Between 0.5 and 0.9
+  const confidence = 0.5 + Math.random() * 0.4;
   
   return {
     value: simulatedPrice,
-    confidence: confidence,
+    confidence,
     timestamp: now.toISOString(),
-    token
+    token,
+    timeframe
   };
 }
 
-export async function fetchAllora(token: Token = 'ETH'): Promise<AlloraResponse> {
-  const { topicId, chain } = TOKEN_MAP[token];
-  const url = `https://api.allora.network/v2/allora/consumer/${chain}`;
+export async function fetchAllora(token: Token = 'ETH', timeframe: TimeFrame = '5m'): Promise<AlloraResponse> {
+  const url = `${BASE_URL}/${token}/${timeframe}`;
 
   try {
     const response = await axios.get(url, {
-      params: {
-        allora_topic_id: topicId
-      },
       headers: {
         'accept': 'application/json',
-        'x-api-key': 'UP-74fac402be894c508591ce80',
+        'x-api-key': API_KEY,
         'Cache-Control': 'no-cache'
       },
-      timeout: 10000 // 10 second timeout
+      timeout: 10000
     });
 
-    console.log('Raw Allora API Response:', response.data);
-
-    // Validate response data
     const data = response.data;
     
     if (!data) {
       console.warn('Empty response from Allora API, using fallback');
-      return generateFallbackData(token);
+      return generateFallbackData(token, timeframe);
     }
 
-    // Extract and validate required fields
     const value = Number(data.value);
     const confidence = Number(data.confidence);
     const timestamp = data.timestamp || new Date().toISOString();
 
-    // Validate numeric values
     if (isNaN(value) || isNaN(confidence)) {
       console.warn('Invalid numeric values in response, using fallback');
-      return generateFallbackData(token);
+      return generateFallbackData(token, timeframe);
     }
 
-    // Validate confidence range
     if (confidence < 0 || confidence > 1) {
       console.warn('Confidence out of range, using fallback');
-      return generateFallbackData(token);
+      return generateFallbackData(token, timeframe);
     }
 
     return {
       value,
       confidence,
       timestamp,
-      token
+      token,
+      timeframe
     };
 
   } catch (error) {
     console.error('Error fetching from Allora API:', error);
-
-    if (axios.isAxiosError(error)) {
-      const status = error.response?.status;
-      
-      // Handle specific error cases
-      switch (status) {
-        case 429:
-          console.warn('Rate limit exceeded, using fallback data');
-          break;
-        case 401:
-          console.warn('Authentication error, using fallback data');
-          break;
-        case 404:
-          console.warn('API endpoint not found, using fallback data');
-          break;
-        default:
-          console.warn('API request failed, using fallback data');
-      }
-    }
-
-    return generateFallbackData(token);
+    return generateFallbackData(token, timeframe);
   }
 }

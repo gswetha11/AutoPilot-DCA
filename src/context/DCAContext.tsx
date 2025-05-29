@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { DCASettings, Token } from '../types';
+import { DCASettings, Token, TimeFrame } from '../types';
+import { TOKENS } from '../services/api';
 
 interface DCAContextType {
   settings: DCASettings;
@@ -28,6 +29,7 @@ export const DCAProvider: React.FC<DCAProviderProps> = ({ children }) => {
     autoMode: false,
     frequency: 'daily',
     investmentAmount: 100,
+    timeframe: '5m'
   });
 
   const [selectedToken, setSelectedToken] = useState<Token>('ETH');

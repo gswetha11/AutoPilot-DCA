@@ -1,10 +1,11 @@
-export type Token = 'APT' | 'USDC' | 'stAPT';
+export type Token = 'ETH' | 'BTC' | 'SOL';
+export type TimeFrame = '5m' | '8h';
 
 export interface TokenData {
   symbol: Token;
   name: string;
   color: string;
-  address: string;
+  timeframes: TimeFrame[];
 }
 
 export interface DCASettings {
@@ -12,6 +13,7 @@ export interface DCASettings {
   autoMode: boolean;
   frequency: 'hourly' | 'daily' | 'weekly';
   investmentAmount: number;
+  timeframe: TimeFrame;
 }
 
 export interface Prediction {
@@ -20,6 +22,7 @@ export interface Prediction {
   confidence: number;
   trend: 'up' | 'down';
   token: Token;
+  timeframe: TimeFrame;
 }
 
 export interface PortfolioStats {

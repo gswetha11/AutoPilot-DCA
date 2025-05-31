@@ -24,6 +24,21 @@ const DCAControls: React.FC = () => {
           />
         </div>
 
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Risk Level
+          </label>
+          <select
+            value={settings.riskLevel}
+            onChange={(e) => updateSettings({ riskLevel: e.target.value as 'conservative' | 'moderate' | 'aggressive' })}
+            className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="conservative">Conservative</option>
+            <option value="moderate">Moderate</option>
+            <option value="aggressive">Aggressive</option>
+          </select>
+        </div>
+
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-slate-700">Auto DCA Mode</span>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -69,4 +84,4 @@ const DCAControls: React.FC = () => {
   );
 };
 
-export default DCAControls
+export default DCAControls;

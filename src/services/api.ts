@@ -31,6 +31,14 @@ interface AlloraResponse {
   timestamp: string;
   token: Token;
   timeframe: TimeFrame;
+  logReturn?: number;
+  marketSentiment?: 'bullish' | 'neutral' | 'bearish';
+}
+
+function calculateMarketSentiment(logReturn: number): 'bullish' | 'neutral' | 'bearish' {
+  if (logReturn > 0.005) return 'bullish';
+  if (logReturn < -0.005) return 'bearish';
+  return 'neutral';
 }
 
 function generateFallbackData(token: Token, timeframe: TimeFrame): AlloraResponse {
@@ -47,17 +55,20 @@ function generateFallbackData(token: Token, timeframe: TimeFrame): AlloraRespons
   const priceChange = basePrice * volatility * (Math.random() - 0.5);
   const simulatedPrice = basePrice + priceChange;
   const confidence = 0.5 + Math.random() * 0.4;
+  const logReturn = Math.log(simulatedPrice / basePrice);
   
   return {
     value: simulatedPrice,
     confidence,
     timestamp: now.toISOString(),
     token,
-    timeframe
+    timeframe,
+    logReturn,
+    marketSentiment: calculateMarketSentiment(logReturn)
   };
 }
 
-export async function fetchAllora(token: Token = 'ETH', timeframe: TimeFrame = '5m'): Promise<AlloraResponse> {
+export async function fetchAllora(token: Token = 'ETH', timeframe: TimeFrame = '8h'): Promise<AlloraResponse> {
   const url = `${BASE_URL}/${token}/${timeframe}`;
 
   try {
@@ -79,6 +90,7 @@ export async function fetchAllora(token: Token = 'ETH', timeframe: TimeFrame = '
 
     const value = Number(data.value);
     const confidence = Number(data.confidence);
+    const logReturn = Number(data.predicted_log_return || Math.log(value / (value - (value * 0.01))));
     const timestamp = data.timestamp || new Date().toISOString();
 
     if (isNaN(value) || isNaN(confidence)) {
@@ -96,11 +108,27 @@ export async function fetchAllora(token: Token = 'ETH', timeframe: TimeFrame = '
       confidence,
       timestamp,
       token,
-      timeframe
+      timeframe,
+      logReturn,
+      marketSentiment: calculateMarketSentiment(logReturn)
     };
 
   } catch (error) {
     console.error('Error fetching from Allora API:', error);
     return generateFallbackData(token, timeframe);
   }
+}
+
+export async function fetchMarketSentiment(): Promise<Record<Token, AlloraResponse>> {
+  const tokens = Object.keys(TOKENS) as Token[];
+  const timeframe: TimeFrame = '8h';
+  
+  const predictions = await Promise.all(
+    tokens.map(token => fetchAllora(token, timeframe))
+  );
+  
+  return tokens.reduce((acc, token, index) => {
+    acc[token] = predictions[index];
+    return acc;
+  }, {} as Record<Token, AlloraResponse>);
 }

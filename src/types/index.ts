@@ -1,5 +1,6 @@
 export type Token = 'ETH' | 'BTC' | 'SOL';
 export type TimeFrame = '5m' | '8h';
+export type MarketSentiment = 'bullish' | 'neutral' | 'bearish';
 
 export interface TokenData {
   symbol: Token;
@@ -14,6 +15,7 @@ export interface DCASettings {
   frequency: 'hourly' | 'daily' | 'weekly';
   investmentAmount: number;
   timeframe: TimeFrame;
+  riskLevel: 'conservative' | 'moderate' | 'aggressive';
 }
 
 export interface Prediction {
@@ -23,12 +25,15 @@ export interface Prediction {
   trend: 'up' | 'down';
   token: Token;
   timeframe: TimeFrame;
+  logReturn?: number;
+  marketSentiment?: MarketSentiment;
 }
 
 export interface PortfolioStats {
   totalInvested: number;
   currentValue: number;
   percentageChange: number;
+  allocations: Record<string, number>;
 }
 
 export interface WalletTransaction {

@@ -1,4 +1,3 @@
-// src/components/Dashboard.tsx
 import React, { useState } from 'react';
 import PredictionDisplay from './PredictionDisplay';
 import ActionRecommendation from './ActionRecommendation';
@@ -31,13 +30,13 @@ const Dashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+        <h2 className="text-2xl font-bold text-white">
           Dashboard
         </h2>
         <button 
           onClick={() => fetchPrediction()}
           disabled={isLoading}
-          className="flex items-center space-x-2 bg-purple-500/20 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-500/30 transition-colors disabled:opacity-50 border border-purple-500/30"
+          className="flex items-center space-x-2 bg-success/10 text-success px-4 py-2 rounded-xl hover:bg-success/20 transition-colors disabled:opacity-50 border border-success/20"
         >
           <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
@@ -50,7 +49,7 @@ const Dashboard: React.FC = () => {
         </p>
       )}
 
-      <div className="border-b border-[#2a2b36]">
+      <div className="border-b border-[#2a324b]">
         <nav className="flex space-x-8">
           {tabs.map(({ id, label, icon: Icon }) => (
             <button
@@ -59,7 +58,7 @@ const Dashboard: React.FC = () => {
               className={`
                 py-4 px-1 relative font-medium text-sm
                 ${activeTab === id 
-                  ? 'text-purple-400 border-b-2 border-purple-400' 
+                  ? 'text-success border-b-2 border-success' 
                   : 'text-gray-400 hover:text-gray-300'}
               `}
             >
@@ -81,8 +80,8 @@ const Dashboard: React.FC = () => {
             <ActionRecommendation prediction={currentPrediction} />
           </div>
 
-          <div className="glass-card rounded-xl p-6">
-            <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+          <div className="chart-card">
+            <h3 className="text-xl font-semibold mb-4 text-white">
               Prediction History
             </h3>
             <PredictionChart />
@@ -94,7 +93,7 @@ const Dashboard: React.FC = () => {
 
       {activeTab === 'dca' && (
         <div className="space-y-6">
-          <div className="glass-card rounded-xl p-6">
+          <div className="glass-card p-6">
             <DCAControls />
           </div>
         </div>

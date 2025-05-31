@@ -6,15 +6,15 @@ interface ConfidenceGaugeProps {
 
 const ConfidenceGauge: React.FC<ConfidenceGaugeProps> = ({ confidence }) => {
   const getColor = () => {
-    if (confidence >= 0.7) return 'bg-emerald-400';
-    if (confidence >= 0.5) return 'bg-amber-400';
-    return 'bg-red-400';
+    if (confidence >= 0.7) return 'bg-success';
+    if (confidence >= 0.5) return 'bg-warning';
+    return 'bg-danger';
   };
 
   const widthPercentage = `${confidence * 100}%`;
   
   return (
-    <div className="relative w-full h-2 bg-[#2a2b36] rounded-full overflow-hidden">
+    <div className="relative w-full h-2 bg-[#2a324b] rounded-full overflow-hidden">
       <div 
         className={`absolute top-0 left-0 h-full ${getColor()} transition-all duration-500 ease-out`}
         style={{ width: widthPercentage }}

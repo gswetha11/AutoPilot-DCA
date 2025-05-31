@@ -23,8 +23,7 @@ const WalletConnect: React.FC = () => {
   return (
     <WalletSelector 
       buttonClassName="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-500/30 transition-colors border border-purple-500/30 font-medium flex items-center space-x-2"
-      contentClassName="!bg-[#1a1b26] !border !border-[#2a2b36] !rounded-lg !shadow-xl !w-[300px]"
-      listClassName="!divide-y !divide-[#2a2b36]"
+      displayMode="button"
       buttonContent={
         <div className="flex items-center space-x-2">
           <Wallet className="h-4 w-4" />

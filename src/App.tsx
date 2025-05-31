@@ -10,6 +10,7 @@ import Layout from './components/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './components/Dashboard';
+import '@aptos-labs/wallet-adapter-ant-design/dist/index.css';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -29,7 +30,7 @@ const wallets = [
 
 function App() {
   return (
-    <AptosWalletAdapterProvider plugins={wallets} autoConnect={true}>
+    <AptosWalletAdapterProvider plugins={wallets} autoConnect={false}>
       <QueryClientProvider client={queryClient}>
         <DCAProvider>
           <PredictionProvider>

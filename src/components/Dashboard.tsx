@@ -9,7 +9,8 @@ import DCAControls from './DCAControls';
 import AutoDCASimulator from './AutoDCASimulator';
 import PortfolioProjection from './PortfolioProjection';
 import { usePrediction } from '../context/PredictionContext';
-import { RefreshCw, AlertCircle } from 'lucide-react';
+import { RefreshCw, AlertCircle, Wallet } from 'lucide-react';
+import { WalletSelector } from '@aptos-labs/wallet-adapter-ant-design';
 
 const Dashboard: React.FC = () => {
   const { 
@@ -19,18 +20,30 @@ const Dashboard: React.FC = () => {
     lastUpdated 
   } = usePrediction();
   
-  const { connected } = useWallet();
+  const { connected, connecting } = useWallet();
 
   if (!connected) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <AlertCircle className="h-16 w-16 text-purple-400/50" />
-        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-          Connect Your Wallet
-        </h2>
-        <p className="text-gray-400 text-center max-w-md">
-          Please connect your Aptos wallet to access the DCA dashboard and start automating your investments.
-        </p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+        <div className="h-16 w-16 rounded-full bg-purple-500/20 flex items-center justify-center">
+          <Wallet className="h-8 w-8 text-purple-400" />
+        </div>
+        <div className="text-center space-y-3">
+          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+            Connect Your Wallet
+          </h2>
+          <p className="text-gray-400 max-w-md">
+            Please connect your Aptos wallet to access the DCA dashboard and start automating your investments.
+          </p>
+        </div>
+        <div className="relative">
+          <WalletSelector />
+        </div>
+        {connecting && (
+          <p className="text-sm text-purple-400 animate-pulse">
+            Connecting to wallet...
+          </p>
+        )}
       </div>
     );
   }

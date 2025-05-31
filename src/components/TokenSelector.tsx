@@ -43,3 +43,5 @@ const TokenSelector: React.FC = () => {
     </div>
   );
 };
+
+export default TokenSelector;

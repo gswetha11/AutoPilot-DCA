@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import PredictionDisplay from './PredictionDisplay';
 import ActionRecommendation from './ActionRecommendation';
 import HistoryLog from './HistoryLog';
@@ -8,7 +9,7 @@ import DCAControls from './DCAControls';
 import AutoDCASimulator from './AutoDCASimulator';
 import PortfolioProjection from './PortfolioProjection';
 import { usePrediction } from '../context/PredictionContext';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, AlertCircle } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const { 
@@ -17,12 +18,28 @@ const Dashboard: React.FC = () => {
     isLoading,
     lastUpdated 
   } = usePrediction();
+  
+  const { connected } = useWallet();
+
+  if (!connected) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+        <AlertCircle className="h-16 w-16 text-purple-400/50" />
+        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+          Connect Your Wallet
+        </h2>
+        <p className="text-gray-400 text-center max-w-md">
+          Please connect your Aptos wallet to access the DCA dashboard and start automating your investments.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-          Dashboard
+          Market Predictions
         </h2>
         <button 
           onClick={() => fetchPrediction()}
@@ -66,4 +83,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard
+export default Dashboard;

@@ -9,7 +9,7 @@ import DCAControls from './DCAControls';
 import AutoDCASimulator from './AutoDCASimulator';
 import PortfolioProjection from './PortfolioProjection';
 import { usePrediction } from '../context/PredictionContext';
-import { RefreshCw, Settings, Bot, ChartLineUp } from 'lucide-react';
+import { RefreshCw, Settings, Bot, LineChart } from 'lucide-react';
 
 type TabType = 'predictions' | 'dca' | 'portfolio';
 
@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
   } = usePrediction();
 
   const tabs = [
-    { id: 'predictions', label: 'Market Predictions', icon: ChartLineUp },
+    { id: 'predictions', label: 'Market Predictions', icon: LineChart },
     { id: 'dca', label: 'DCA Settings', icon: Settings },
     { id: 'portfolio', label: 'Portfolio & Bot', icon: Bot },
   ] as const;

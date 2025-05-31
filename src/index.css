@@ -100,7 +100,7 @@ body {
 }
 
 .wallet-selector-item {
-  @apply !px-4 !py-3 !flex !items-center !space-x-3 !hover:bg-[#2a2b36]/50 !transition-colors !cursor-pointer;
+  @apply !px-4 !py-3 !flex !items-center !space-x-3 hover:!bg-[#2a2b36]/50 !transition-colors !cursor-pointer;
 }
 
 .wallet-selector-item-icon {

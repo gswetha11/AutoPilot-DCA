@@ -1,4 +1,5 @@
-import React from 'react';
+// src/components/Dashboard.tsx
+import React, { useState } from 'react';
 import PredictionDisplay from './PredictionDisplay';
 import ActionRecommendation from './ActionRecommendation';
 import HistoryLog from './HistoryLog';
@@ -8,15 +9,24 @@ import DCAControls from './DCAControls';
 import AutoDCASimulator from './AutoDCASimulator';
 import PortfolioProjection from './PortfolioProjection';
 import { usePrediction } from '../context/PredictionContext';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Settings, Bot, ChartLineUp } from 'lucide-react';
+
+type TabType = 'predictions' | 'dca' | 'portfolio';
 
 const Dashboard: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<TabType>('predictions');
   const { 
     currentPrediction, 
     fetchPrediction, 
     isLoading,
     lastUpdated 
   } = usePrediction();
+
+  const tabs = [
+    { id: 'predictions', label: 'Market Predictions', icon: ChartLineUp },
+    { id: 'dca', label: 'DCA Settings', icon: Settings },
+    { id: 'portfolio', label: 'Portfolio & Bot', icon: Bot },
+  ] as const;
 
   return (
     <div className="space-y-6">
@@ -40,28 +50,64 @@ const Dashboard: React.FC = () => {
         </p>
       )}
 
+      <div className="border-b border-[#2a2b36]">
+        <nav className="flex space-x-8">
+          {tabs.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              onClick={() => setActiveTab(id)}
+              className={`
+                py-4 px-1 relative font-medium text-sm
+                ${activeTab === id 
+                  ? 'text-purple-400 border-b-2 border-purple-400' 
+                  : 'text-gray-400 hover:text-gray-300'}
+              `}
+            >
+              <div className="flex items-center space-x-2">
+                <Icon className="h-4 w-4" />
+                <span>{label}</span>
+              </div>
+            </button>
+          ))}
+        </nav>
+      </div>
+
       <TokenSelector />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <PredictionDisplay prediction={currentPrediction} />
-        <ActionRecommendation prediction={currentPrediction} />
-      </div>
+      {activeTab === 'predictions' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <PredictionDisplay prediction={currentPrediction} />
+            <ActionRecommendation prediction={currentPrediction} />
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AutoDCASimulator />
-        <DCAControls />
-      </div>
+          <div className="glass-card rounded-xl p-6">
+            <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+              Prediction History
+            </h3>
+            <PredictionChart />
+          </div>
 
-      <PortfolioProjection />
+          <HistoryLog />
+        </div>
+      )}
 
-      <div className="glass-card rounded-xl p-6">
-        <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-          Prediction History
-        </h3>
-        <PredictionChart />
-      </div>
+      {activeTab === 'dca' && (
+        <div className="space-y-6">
+          <div className="glass-card rounded-xl p-6">
+            <DCAControls />
+          </div>
+        </div>
+      )}
 
-      <HistoryLog />
+      {activeTab === 'portfolio' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AutoDCASimulator />
+            <PortfolioProjection />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

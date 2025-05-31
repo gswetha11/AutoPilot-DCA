@@ -10,7 +10,6 @@ const WalletConnect: React.FC = () => {
   const [isDisconnecting, setIsDisconnecting] = useState(false);
 
   useEffect(() => {
-    // Clear error when wallet changes
     if (wallet) {
       setError(null);
     }
@@ -67,34 +66,40 @@ const WalletConnect: React.FC = () => {
     );
   }
 
-  return (
-    <div className="flex items-center space-x-4">
-      {connected && account ? (
-        <>
-          <div className="flex items-center space-x-2 bg-[#1a1b26] px-4 py-2 rounded-lg border border-[#2a2b36]">
-            <Wallet className="h-4 w-4 text-emerald-400" />
-            <span className="text-sm text-emerald-400">
-              {account.address.slice(0, 6)}...{account.address.slice(-4)}
-            </span>
-          </div>
-          <button
-            onClick={handleDisconnect}
-            disabled={isDisconnecting}
-            className="text-sm text-red-400 hover:text-red-300 transition-colors disabled:opacity-50 flex items-center space-x-1"
-          >
-            {isDisconnecting && <Loader2 className="h-3 w-3 animate-spin" />}
-            <span>Disconnect</span>
-          </button>
-        </>
-      ) : (
-        <div className="relative">
-          <WalletSelector 
-            onSelect={handleConnect}
-            buttonClassName="bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 border border-purple-500/30"
-          />
+  if (connected && account) {
+    return (
+      <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 bg-[#1a1b26] px-4 py-2 rounded-lg border border-[#2a2b36]">
+          <Wallet className="h-4 w-4 text-emerald-400" />
+          <span className="text-sm text-emerald-400">
+            {account.address.slice(0, 6)}...{account.address.slice(-4)}
+          </span>
         </div>
-      )}
-    </div>
+        <button
+          onClick={handleDisconnect}
+          disabled={isDisconnecting}
+          className="text-sm text-red-400 hover:text-red-300 transition-colors disabled:opacity-50 flex items-center space-x-1"
+        >
+          {isDisconnecting && <Loader2 className="h-3 w-3 animate-spin" />}
+          <span>Disconnect</span>
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <WalletSelector 
+      onWalletSelect={handleConnect}
+      buttonClassName="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-500/30 transition-colors border border-purple-500/30 font-medium flex items-center space-x-2"
+      contentClassName="bg-[#1a1b26] border border-[#2a2b36] rounded-lg shadow-xl"
+      listClassName="divide-y divide-[#2a2b36]"
+      buttonContent={
+        <div className="flex items-center space-x-2">
+          <Wallet className="h-4 w-4" />
+          <span>Connect Wallet</span>
+        </div>
+      }
+    />
   );
 };
 

@@ -60,3 +60,48 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-[#3a3b46];
 }
+
+/* Wallet Selector Overrides */
+.ant-modal-content {
+  @apply bg-[#1a1b26] !important;
+  @apply border border-[#2a2b36] !important;
+  @apply rounded-xl !important;
+  @apply shadow-xl !important;
+}
+
+.ant-modal-header {
+  @apply bg-transparent !important;
+  @apply border-b border-[#2a2b36] !important;
+}
+
+.ant-modal-title {
+  @apply text-gray-100 !important;
+}
+
+.ant-modal-close {
+  @apply text-gray-400 !important;
+}
+
+.ant-modal-close:hover {
+  @apply text-gray-300 !important;
+}
+
+.ant-modal-body {
+  @apply p-0 !important;
+}
+
+.wallet-selector-list {
+  @apply divide-y divide-[#2a2b36] !important;
+}
+
+.wallet-selector-item {
+  @apply px-4 py-3 flex items-center space-x-3 hover:bg-[#2a2b36]/50 transition-colors cursor-pointer !important;
+}
+
+.wallet-selector-item-icon {
+  @apply h-8 w-8 rounded-full !important;
+}
+
+.wallet-selector-item-name {
+  @apply text-gray-100 font-medium !important;
+}

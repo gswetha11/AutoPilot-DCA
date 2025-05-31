@@ -17,11 +17,6 @@ const WalletConnect: React.FC = () => {
   }, [wallet]);
 
   const handleConnect = useCallback(async () => {
-    if (!window.aptos) {
-      setError('No wallet detected. Please install Petra, Martian, or Pontem wallet.');
-      return;
-    }
-
     try {
       setError(null);
       if (!wallet) {
@@ -102,5 +97,3 @@ const WalletConnect: React.FC = () => {
     </div>
   );
 };
-
-export default WalletConnect;

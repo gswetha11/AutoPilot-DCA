@@ -10,6 +10,7 @@ import Layout from './components/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './components/Dashboard';
+import './index.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

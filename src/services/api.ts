@@ -83,8 +83,7 @@ export async function fetchAllora(token: Token = 'ETH', timeframe: TimeFrame = '
 
     const data = response.data;
     
-    if (!data) {
-      console.warn('Empty response from Allora API, using fallback');
+    if (!data || typeof data.value !== 'number' || typeof data.confidence !== 'number') {
       return generateFallbackData(token, timeframe);
     }
 
@@ -94,12 +93,10 @@ export async function fetchAllora(token: Token = 'ETH', timeframe: TimeFrame = '
     const timestamp = data.timestamp || new Date().toISOString();
 
     if (isNaN(value) || isNaN(confidence)) {
-      console.warn('Invalid numeric values in response, using fallback');
       return generateFallbackData(token, timeframe);
     }
 
     if (confidence < 0 || confidence > 1) {
-      console.warn('Confidence out of range, using fallback');
       return generateFallbackData(token, timeframe);
     }
 

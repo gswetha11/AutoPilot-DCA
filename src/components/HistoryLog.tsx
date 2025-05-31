@@ -35,8 +35,8 @@ const HistoryLog: React.FC = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-[#2a2b36]">
-            {predictionHistory.map((entry) => (
-              <tr key={entry.timestamp} className="hover:bg-[#2a2b36]/30 transition-colors">
+            {predictionHistory.map((entry, index) => (
+              <tr key={`${entry.timestamp}-${index}`} className="hover:bg-[#2a2b36]/30 transition-colors">
                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">
                   {formatDistanceToNow(new Date(entry.timestamp), { addSuffix: true })}
                 </td>

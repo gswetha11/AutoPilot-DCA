@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { WalletSelector } from '@aptos-labs/wallet-adapter-ant-design';
 import { Wallet, Loader2, AlertCircle } from 'lucide-react';
@@ -9,7 +9,19 @@ const WalletConnect: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isDisconnecting, setIsDisconnecting] = useState(false);
 
+  useEffect(() => {
+    // Clear error when wallet changes
+    if (wallet) {
+      setError(null);
+    }
+  }, [wallet]);
+
   const handleConnect = useCallback(async () => {
+    if (!window.aptos) {
+      setError('No wallet detected. Please install Petra, Martian, or Pontem wallet.');
+      return;
+    }
+
     try {
       setError(null);
       if (!wallet) {
@@ -19,7 +31,7 @@ const WalletConnect: React.FC = () => {
       await connect();
     } catch (err) {
       console.error('Connection error:', err);
-      setError('Failed to connect wallet');
+      setError('Failed to connect wallet. Please try again.');
     }
   }, [wallet, connect]);
 
@@ -36,20 +48,26 @@ const WalletConnect: React.FC = () => {
     }
   };
 
-  if (connecting) {
-    return (
-      <div className="flex items-center space-x-2 bg-[#1a1b26] px-4 py-2 rounded-lg border border-[#2a2b36]">
-        <Loader2 className="h-4 w-4 text-purple-400 animate-spin" />
-        <span className="text-sm text-purple-400">Connecting...</span>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex items-center space-x-2 bg-red-500/10 px-4 py-2 rounded-lg border border-red-500/20">
         <AlertCircle className="h-4 w-4 text-red-400" />
         <span className="text-sm text-red-400">{error}</span>
+        <button 
+          onClick={() => setError(null)}
+          className="ml-2 text-xs text-red-400 hover:text-red-300"
+        >
+          Dismiss
+        </button>
+      </div>
+    );
+  }
+
+  if (connecting) {
+    return (
+      <div className="flex items-center space-x-2 bg-[#1a1b26] px-4 py-2 rounded-lg border border-[#2a2b36]">
+        <Loader2 className="h-4 w-4 text-purple-400 animate-spin" />
+        <span className="text-sm text-purple-400">Connecting...</span>
       </div>
     );
   }
@@ -76,7 +94,7 @@ const WalletConnect: React.FC = () => {
       ) : (
         <div className="relative">
           <WalletSelector 
-            onWalletSelect={handleConnect}
+            onSelect={handleConnect}
             buttonClassName="bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 border border-purple-500/30"
           />
         </div>

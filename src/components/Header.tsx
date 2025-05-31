@@ -1,6 +1,5 @@
 import React from 'react';
-import { Coins } from 'lucide-react';
-import WalletConnect from './WalletConnect';
+import { Coins, Settings } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
@@ -15,7 +14,9 @@ const Header: React.FC = () => {
             <p className="text-xs text-gray-400">Smart Crypto Buyer</p>
           </div>
         </div>
-        <WalletConnect />
+        <button className="p-2 rounded-full hover:bg-[#2a2b36] transition-colors">
+          <Settings className="h-5 w-5 text-gray-400" />
+        </button>
       </div>
     </header>
   );

@@ -60,32 +60,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-[#3a3b46];
 }
-
-/* Wallet Selector Overrides */
-.ant-btn {
-  @apply bg-transparent border-none shadow-none text-inherit hover:bg-transparent;
-}
-
-.ant-select-dropdown {
-  @apply bg-[#1a1b26] border border-[#2a2b36] rounded-lg shadow-lg mt-2;
-}
-
-.ant-select-item {
-  @apply px-4 py-3 text-gray-300 hover:bg-[#2a2b36] transition-colors cursor-pointer;
-}
-
-.ant-select-item-option-selected {
-  @apply bg-[#2a2b36];
-}
-
-.ant-select-item-option-content {
-  @apply flex items-center space-x-3;
-}
-
-.ant-select-item-option-content img {
-  @apply h-8 w-8 rounded-full;
-}
-
-.ant-select-item-option-content span {
-  @apply text-gray-100 font-medium;
-}

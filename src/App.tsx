@@ -9,7 +9,7 @@ import { PontemWallet } from '@pontem/wallet-adapter-plugin';
 import Layout from './components/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './components/Dashboard';
 
 const queryClient = new QueryClient({
   defaultOptions: {

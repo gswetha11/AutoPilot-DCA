@@ -16,6 +16,14 @@ export interface DCASettings {
   investmentAmount: number;
   timeframe: TimeFrame;
   riskLevel: 'conservative' | 'moderate' | 'aggressive';
+  usdcFallback: boolean;
+  autoRebalance: boolean;
+  stakeIdle: boolean;
+  maxAllocation: {
+    conservative: number;
+    moderate: number;
+    aggressive: number;
+  };
 }
 
 export interface Prediction {

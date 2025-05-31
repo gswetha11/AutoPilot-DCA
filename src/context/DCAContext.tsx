@@ -33,21 +33,35 @@ export const DCAProvider: React.FC<DCAProviderProps> = ({ children }) => {
     frequency: 'daily',
     investmentAmount: 100,
     timeframe: '8h',
-    riskLevel: 'moderate'
+    riskLevel: 'moderate',
+    usdcFallback: true,
+    autoRebalance: true,
+    stakeIdle: true,
+    maxAllocation: {
+      conservative: 20,
+      moderate: 35,
+      aggressive: 50
+    }
   });
 
   const [selectedToken, setSelectedToken] = useState<Token>('ETH');
   const [isAutoMode, setIsAutoMode] = useState(false);
 
   useEffect(() => {
-    dcaEngine.updateSettings(settings);
+    dcaEngine.updateSettings({
+      targetToken: selectedToken,
+      amount: settings.investmentAmount,
+      frequency: settings.frequency,
+      confidenceThreshold: settings.confidenceThreshold / 100,
+      usdcFallbackEnabled: settings.usdcFallback
+    });
     
     if (settings.autoMode) {
       dcaEngine.start();
     } else {
       dcaEngine.stop();
     }
-  }, [settings]);
+  }, [settings, selectedToken]);
 
   const updateSettings = (newSettings: Partial<DCASettings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
@@ -71,3 +85,5 @@ export const DCAProvider: React.FC<DCAProviderProps> = ({ children }) => {
     </DCAContext.Provider>
   );
 };
+
+export default DCAProvider;

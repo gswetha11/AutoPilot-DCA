@@ -27,14 +27,13 @@ interface PredictionProviderProps {
 }
 
 export const PredictionProvider: React.FC<PredictionProviderProps> = ({ children }) => {
-  const { selectedToken } = useDCA();
+  const { selectedToken, settings } = useDCA();
   const [currentPrediction, setCurrentPrediction] = useState<Prediction | null>(null);
   const [predictionHistory, setPredictionHistory] = useState<Prediction[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [lastUpdated, setLastUpdated] = useState<number | null>(null);
 
-  // Load from localStorage on initial render
   useEffect(() => {
     const savedHistory = localStorage.getItem('predictionHistory');
     if (savedHistory) {
@@ -43,7 +42,6 @@ export const PredictionProvider: React.FC<PredictionProviderProps> = ({ children
         if (Array.isArray(parsedHistory)) {
           setPredictionHistory(parsedHistory);
           
-          // Set the most recent prediction as current
           if (parsedHistory.length > 0) {
             const sorted = [...parsedHistory].sort((a, b) => 
               new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
@@ -51,8 +49,6 @@ export const PredictionProvider: React.FC<PredictionProviderProps> = ({ children
             setCurrentPrediction(sorted[0]);
             setLastUpdated(new Date(sorted[0].timestamp).getTime());
           }
-        } else {
-          throw new Error('Invalid history format');
         }
       } catch (e) {
         console.error('Failed to parse saved history:', e);
@@ -61,7 +57,6 @@ export const PredictionProvider: React.FC<PredictionProviderProps> = ({ children
     }
   }, []);
 
-  // Save to localStorage whenever history changes
   useEffect(() => {
     if (predictionHistory.length > 0) {
       try {
@@ -72,33 +67,35 @@ export const PredictionProvider: React.FC<PredictionProviderProps> = ({ children
     }
   }, [predictionHistory]);
 
-  // Set up auto-refresh interval (every 5 minutes)
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchPrediction();
     }, 5 * 60 * 1000);
     
     return () => clearInterval(intervalId);
-  }, []);
+  }, [selectedToken]);
 
   const fetchPrediction = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
     try {
-      const data = await fetchAllora(selectedToken);
+      const data = await fetchAllora(selectedToken, settings.timeframe);
       
       const prediction: Prediction = {
         timestamp: data.timestamp,
         predictionValue: data.value,
         confidence: data.confidence,
         trend: data.value > 0 ? 'up' : 'down',
-        token: selectedToken
+        token: selectedToken,
+        timeframe: settings.timeframe,
+        logReturn: data.logReturn,
+        marketSentiment: data.marketSentiment
       };
       
       setCurrentPrediction(prediction);
       setPredictionHistory(prev => {
-        const newHistory = [prediction, ...prev].slice(0, 50); // Keep last 50 records
+        const newHistory = [prediction, ...prev].slice(0, 50);
         return newHistory;
       });
       setLastUpdated(Date.now());
@@ -109,14 +106,8 @@ export const PredictionProvider: React.FC<PredictionProviderProps> = ({ children
     } finally {
       setIsLoading(false);
     }
-  }, [selectedToken]);
+  }, [selectedToken, settings.timeframe]);
 
-  // Fetch when token changes
-  useEffect(() => {
-    fetchPrediction();
-  }, [selectedToken, fetchPrediction]);
-
-  // Initial fetch
   useEffect(() => {
     if (!currentPrediction) {
       fetchPrediction();

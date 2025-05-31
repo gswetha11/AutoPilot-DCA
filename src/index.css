@@ -61,52 +61,23 @@ body {
   @apply bg-[#3a3b46];
 }
 
-/* Ant Design Modal Overrides */
-.ant-modal {
-  @apply !w-[300px];
-}
-
-.ant-modal-content {
-  @apply !bg-[#1a1b26] !border !border-[#2a2b36] !rounded-lg !shadow-xl !p-0;
-}
-
-.ant-modal-header {
-  @apply !bg-transparent !border-b !border-[#2a2b36] !p-4;
-}
-
-.ant-modal-title {
-  @apply !text-gray-100 !text-lg !font-semibold;
-}
-
-.ant-modal-close {
-  @apply !text-gray-400 !top-4 !right-4;
-}
-
-.ant-modal-close:hover {
-  @apply !text-gray-300;
-}
-
-.ant-modal-body {
-  @apply !p-0;
-}
-
 /* Wallet Selector Overrides */
 .wallet-selector {
-  @apply !p-0;
+  @apply relative;
 }
 
 .wallet-selector-list {
-  @apply !divide-y !divide-[#2a2b36];
+  @apply divide-y divide-[#2a2b36];
 }
 
 .wallet-selector-item {
-  @apply !px-4 !py-3 !flex !items-center !space-x-3 hover:!bg-[#2a2b36]/50 !transition-colors !cursor-pointer;
+  @apply px-4 py-3 flex items-center space-x-3 hover:!bg-[#2a2b36] transition-colors cursor-pointer;
 }
 
 .wallet-selector-item-icon {
-  @apply !h-8 !w-8 !rounded-full;
+  @apply h-8 w-8 rounded-full;
 }
 
 .wallet-selector-item-name {
-  @apply !text-gray-100 !font-medium;
+  @apply text-gray-100 font-medium;
 }

@@ -67,7 +67,7 @@ body {
 }
 
 .ant-select-dropdown {
-  @apply bg-[#1a1b26] border border-[#2a2b36] rounded-lg shadow-lg;
+  @apply bg-[#1a1b26] border border-[#2a2b36] rounded-lg shadow-lg mt-2;
 }
 
 .ant-select-item {

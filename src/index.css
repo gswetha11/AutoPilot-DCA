@@ -62,22 +62,26 @@ body {
 }
 
 /* Wallet Selector Overrides */
-.wallet-selector {
-  @apply relative;
+.ant-btn {
+  @apply bg-transparent border-none shadow-none text-inherit hover:bg-transparent;
 }
 
-.wallet-selector-list {
-  @apply divide-y divide-[#2a2b36];
+.ant-select-dropdown {
+  @apply bg-[#1a1b26] border border-[#2a2b36] rounded-lg shadow-lg;
 }
 
-.wallet-selector-item {
-  @apply px-4 py-3 flex items-center space-x-3 hover:!bg-[#2a2b36] transition-colors cursor-pointer;
+.ant-select-item {
+  @apply px-4 py-3 hover:bg-[#2a2b36] transition-colors cursor-pointer;
 }
 
-.wallet-selector-item-icon {
+.ant-select-item-option-content {
+  @apply flex items-center space-x-3;
+}
+
+.ant-select-item-option-content img {
   @apply h-8 w-8 rounded-full;
 }
 
-.wallet-selector-item-name {
+.ant-select-item-option-content span {
   @apply text-gray-100 font-medium;
 }

@@ -62,24 +62,34 @@ body {
 }
 
 /* Wallet Selector Overrides */
+.ant-modal {
+  @apply !w-[400px];
+}
+
 .ant-modal-content {
   @apply bg-[#1a1b26] !important;
   @apply border border-[#2a2b36] !important;
   @apply rounded-xl !important;
   @apply shadow-xl !important;
+  @apply p-0 !important;
 }
 
 .ant-modal-header {
   @apply bg-transparent !important;
   @apply border-b border-[#2a2b36] !important;
+  @apply p-4 !important;
 }
 
 .ant-modal-title {
   @apply text-gray-100 !important;
+  @apply text-lg !important;
+  @apply font-semibold !important;
 }
 
 .ant-modal-close {
   @apply text-gray-400 !important;
+  @apply top-4 !important;
+  @apply right-4 !important;
 }
 
 .ant-modal-close:hover {
@@ -87,6 +97,10 @@ body {
 }
 
 .ant-modal-body {
+  @apply p-0 !important;
+}
+
+.wallet-selector {
   @apply p-0 !important;
 }
 

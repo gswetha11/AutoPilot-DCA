@@ -30,7 +30,7 @@ const wallets = [
 
 function App() {
   return (
-    <AptosWalletAdapterProvider plugins={wallets} autoConnect={false}>
+    <AptosWalletAdapterProvider plugins={wallets} autoConnect={true}>
       <QueryClientProvider client={queryClient}>
         <DCAProvider>
           <PredictionProvider>

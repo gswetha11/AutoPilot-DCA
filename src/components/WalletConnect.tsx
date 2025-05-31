@@ -1,95 +1,24 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React from 'react';
 import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { WalletSelector } from '@aptos-labs/wallet-adapter-ant-design';
-import { Wallet, Loader2, AlertCircle } from 'lucide-react';
-import '@aptos-labs/wallet-adapter-ant-design/dist/index.css';
+import { Wallet } from 'lucide-react';
 
 const WalletConnect: React.FC = () => {
-  const { account, connected, disconnect, connecting, connect, wallet } = useWallet();
-  const [error, setError] = useState<string | null>(null);
-  const [isDisconnecting, setIsDisconnecting] = useState(false);
-
-  useEffect(() => {
-    if (wallet) {
-      setError(null);
-    }
-  }, [wallet]);
-
-  const handleConnect = useCallback(async () => {
-    try {
-      setError(null);
-      if (!wallet) {
-        setError('Please select a wallet first');
-        return;
-      }
-      await connect();
-    } catch (err) {
-      console.error('Connection error:', err);
-      setError('Failed to connect wallet. Please try again.');
-    }
-  }, [wallet, connect]);
-
-  const handleDisconnect = async () => {
-    try {
-      setIsDisconnecting(true);
-      setError(null);
-      await disconnect();
-    } catch (err) {
-      console.error('Disconnect error:', err);
-      setError('Failed to disconnect wallet');
-    } finally {
-      setIsDisconnecting(false);
-    }
-  };
-
-  if (error) {
-    return (
-      <div className="flex items-center space-x-2 bg-red-500/10 px-4 py-2 rounded-lg border border-red-500/20">
-        <AlertCircle className="h-4 w-4 text-red-400" />
-        <span className="text-sm text-red-400">{error}</span>
-        <button 
-          onClick={() => setError(null)}
-          className="ml-2 text-xs text-red-400 hover:text-red-300"
-        >
-          Dismiss
-        </button>
-      </div>
-    );
-  }
-
-  if (connecting) {
-    return (
-      <div className="flex items-center space-x-2 bg-[#1a1b26] px-4 py-2 rounded-lg border border-[#2a2b36]">
-        <Loader2 className="h-4 w-4 text-purple-400 animate-spin" />
-        <span className="text-sm text-purple-400">Connecting...</span>
-      </div>
-    );
-  }
+  const { connected, account } = useWallet();
 
   if (connected && account) {
     return (
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-2 bg-[#1a1b26] px-4 py-2 rounded-lg border border-[#2a2b36]">
-          <Wallet className="h-4 w-4 text-emerald-400" />
-          <span className="text-sm text-emerald-400">
-            {account.address.slice(0, 6)}...{account.address.slice(-4)}
-          </span>
-        </div>
-        <button
-          onClick={handleDisconnect}
-          disabled={isDisconnecting}
-          className="text-sm text-red-400 hover:text-red-300 transition-colors disabled:opacity-50 flex items-center space-x-1"
-        >
-          {isDisconnecting && <Loader2 className="h-3 w-3 animate-spin" />}
-          <span>Disconnect</span>
-        </button>
+      <div className="flex items-center space-x-2 bg-[#1a1b26] px-4 py-2 rounded-lg border border-[#2a2b36]">
+        <Wallet className="h-4 w-4 text-emerald-400" />
+        <span className="text-sm text-emerald-400">
+          {account.address.slice(0, 6)}...{account.address.slice(-4)}
+        </span>
       </div>
     );
   }
 
   return (
     <WalletSelector 
-      onWalletSelect={handleConnect}
       buttonClassName="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-500/30 transition-colors border border-purple-500/30 font-medium flex items-center space-x-2"
       contentClassName="bg-[#1a1b26] border border-[#2a2b36] rounded-lg shadow-xl"
       listClassName="divide-y divide-[#2a2b36]"

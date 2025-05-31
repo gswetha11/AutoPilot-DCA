@@ -22,6 +22,7 @@ const WalletConnect: React.FC = () => {
 
   return (
     <WalletSelector 
+      displayMode="dropdown"
       buttonClassName="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-500/30 transition-colors border border-purple-500/30 font-medium flex items-center space-x-2"
       buttonContent={
         <div className="flex items-center space-x-2">

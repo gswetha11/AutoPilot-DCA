@@ -46,26 +46,28 @@ const AutoDCASimulator: React.FC = () => {
   }, [isLive, currentPrediction, settings]);
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6">
+    <div className="glass-card p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
-          <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-            <Bot className="h-5 w-5 text-blue-500" />
+          <div className="h-10 w-10 rounded-xl bg-success/10 flex items-center justify-center">
+            <Bot className="h-5 w-5 text-success" />
           </div>
-          <h3 className="text-xl font-semibold">Auto-DCA Bot</h3>
+          <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+            Auto-DCA Bot
+          </h3>
         </div>
         
         {!isWalletConnected ? (
           <button
             onClick={() => setIsWalletConnected(true)}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-500/10 text-blue-500 rounded-lg hover:bg-blue-500/20 transition-colors border border-blue-500/20"
+            className="flex items-center space-x-2 px-4 py-2 bg-[#1a1f2e] text-gray-300 rounded-xl hover:bg-[#2a324b] transition-colors border border-[#2a324b]"
           >
             <Wallet className="h-4 w-4" />
             <span>Connect Wallet</span>
           </button>
         ) : (
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 px-4 py-2 bg-emerald-500/10 text-emerald-500 rounded-lg border border-emerald-500/20">
+            <div className="flex items-center space-x-2 px-4 py-2 bg-success/10 text-success rounded-xl border border-success/20">
               <Wallet className="h-4 w-4" />
               <span>0x1234...5678</span>
             </div>
@@ -76,8 +78,8 @@ const AutoDCASimulator: React.FC = () => {
                 onChange={(e) => setIsLive(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-slate-200 peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-              <span className="ml-3 text-sm font-medium text-slate-600">
+              <div className="w-11 h-6 bg-[#2a324b] peer-focus:ring-2 peer-focus:ring-success/25 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-300 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success/20 peer-checked:after:bg-success"></div>
+              <span className="ml-3 text-sm font-medium text-gray-300">
                 {isLive ? 'Live' : 'Paused'}
               </span>
             </label>
@@ -86,42 +88,42 @@ const AutoDCASimulator: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-slate-50 rounded-lg p-4">
-          <p className="text-sm text-slate-600">Total Invested</p>
-          <p className="text-2xl font-bold text-slate-800">
+        <div className="bg-[#1a1f2e] rounded-xl p-4 border border-[#2a324b]">
+          <p className="text-sm text-gray-400">Total Invested</p>
+          <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
             ${totalInvested.toFixed(2)}
           </p>
         </div>
-        <div className="bg-slate-50 rounded-lg p-4">
-          <p className="text-sm text-slate-600">Last Trade</p>
-          <p className="text-2xl font-bold text-slate-800">
+        <div className="bg-[#1a1f2e] rounded-xl p-4 border border-[#2a324b]">
+          <p className="text-sm text-gray-400">Last Trade</p>
+          <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
             ${trades[0]?.amount.toFixed(2) || '0.00'}
           </p>
         </div>
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-medium text-slate-700">Recent Bot Actions</h4>
+        <h4 className="font-medium text-gray-300">Recent Bot Actions</h4>
         <div className="space-y-3">
           {trades.map((trade, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
+              className="flex items-center justify-between p-3 bg-[#1a1f2e] rounded-xl border border-[#2a324b]"
             >
               <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-lg bg-blue-500/10">
-                  <DollarSign className="h-4 w-4 text-blue-500" />
+                <div className="p-2 rounded-xl bg-success/10">
+                  <DollarSign className="h-4 w-4 text-success" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-700">
+                  <p className="text-sm font-medium text-gray-300">
                     {trade.action} {trade.token}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-gray-400">
                     Confidence: {(trade.confidence * 100).toFixed(0)}%
                   </p>
                 </div>
               </div>
-              <p className="text-sm font-medium text-slate-700">
+              <p className="text-sm font-medium text-gray-300">
                 ${trade.amount.toFixed(2)}
               </p>
             </div>
@@ -129,9 +131,9 @@ const AutoDCASimulator: React.FC = () => {
 
           {trades.length === 0 && (
             <div className="text-center py-8">
-              <Bot className="h-8 w-8 mx-auto mb-2 text-slate-400 opacity-50" />
-              <p className="text-slate-600">No trades executed yet</p>
-              <p className="text-sm text-slate-500 mt-1">
+              <Bot className="h-8 w-8 mx-auto mb-2 text-gray-400 opacity-50" />
+              <p className="text-gray-300">No trades executed yet</p>
+              <p className="text-sm text-gray-400 mt-1">
                 {isWalletConnected 
                   ? 'Turn on the bot to start trading'
                   : 'Connect your wallet to start trading'}
